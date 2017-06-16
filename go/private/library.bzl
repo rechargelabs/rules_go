@@ -177,6 +177,8 @@ def go_importpath(ctx):
     path += "/" + ctx.label.name
   if path.rfind(VENDOR_PREFIX) != -1:
     path = path[len(VENDOR_PREFIX) + path.rfind(VENDOR_PREFIX):]
+  if path.rfind("/src/") != -1:
+    path = path[len("/src/") + path.rfind("/src/"):]
   if path[0] == "/":
     path = path[1:]
   return path
