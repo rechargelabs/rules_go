@@ -177,8 +177,8 @@ def go_importpath(ctx):
     path += "/" + ctx.label.name
   if path.rfind(VENDOR_PREFIX) != -1:
     path = path[len(VENDOR_PREFIX) + path.rfind(VENDOR_PREFIX):]
-  if path.rfind("/src/") != -1:
-    path = path[len("/src/") + path.rfind("/src/"):]
+  if path.rfind(SRC_PREFIX) != -1: # ADDED BY RECHARGE: this is necessary to strip out the /src/ prefix when using the root of a monorepo as the GOPATH
+    path = path[len(SRC_PREFIX) + path.rfind(SRC_PREFIX):]
   if path[0] == "/":
     path = path[1:]
   return path

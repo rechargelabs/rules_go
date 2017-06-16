@@ -16,6 +16,8 @@ DEFAULT_LIB = "go_default_library"
 
 VENDOR_PREFIX = "/vendor/"
 
+SRC_PREFIX = "/src/" # ADDED BY RECHARGE
+
 go_filetype = FileType([
     ".go",
     ".s",
