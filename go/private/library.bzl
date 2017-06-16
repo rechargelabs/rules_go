@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-load("@io_bazel_rules_go//go/private:common.bzl", "get_go_toolchain", "DEFAULT_LIB", "VENDOR_PREFIX", "go_filetype")
+load("@io_bazel_rules_go//go/private:common.bzl", "get_go_toolchain", "DEFAULT_LIB", "VENDOR_PREFIX", "SRC_PREFIX", "go_filetype")
 load("@io_bazel_rules_go//go/private:asm.bzl", "emit_go_asm_action")
 
 def emit_library_actions(ctx, sources, deps, cgo_object, library):
