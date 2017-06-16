@@ -23,7 +23,7 @@ import (
 	"strings"
 
 	bzl "github.com/bazelbuild/buildtools/build"
-	"github.com/bazelbuild/rules_go/go/tools/gazelle/packages"
+	"github.com/rechargelabs/rules_go/go/tools/gazelle/packages"
 )
 
 const (
@@ -71,12 +71,12 @@ type Generator interface {
 //
 // "repoRoot" is a path to the root directory of the repository.
 // "goPrefix" is the go_prefix corresponding to the repository root.
-// See also https://github.com/bazelbuild/rules_go#go_prefix.
+// See also https://github.com/rechargelabs/rules_go#go_prefix.
 // "external" is how external packages should be resolved.
 func NewGenerator(repoRoot string, goPrefix string, external ExternalResolver) Generator {
 	var (
 		// TODO(yugui) Support another resolver to cover the pattern 2 in
-		// https://github.com/bazelbuild/rules_go/issues/16#issuecomment-216010843
+		// https://github.com/rechargelabs/rules_go/issues/16#issuecomment-216010843
 		r = structuredResolver{goPrefix: goPrefix}
 	)
 

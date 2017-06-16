@@ -2,7 +2,7 @@
 
 ## Setup
 
-For local use, in `$GOPATH/src/github.com/bazelbuild/rules_go/go/tools/gazelle/gazelle`
+For local use, in `$GOPATH/src/github.com/rechargelabs/rules_go/go/tools/gazelle/gazelle`
 run `go install`
 
 ## Usage

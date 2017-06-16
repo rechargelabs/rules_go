@@ -28,10 +28,10 @@ import (
 	"strings"
 
 	bzl "github.com/bazelbuild/buildtools/build"
-	"github.com/bazelbuild/rules_go/go/tools/gazelle/generator"
-	"github.com/bazelbuild/rules_go/go/tools/gazelle/merger"
-	"github.com/bazelbuild/rules_go/go/tools/gazelle/rules"
-	"github.com/bazelbuild/rules_go/go/tools/gazelle/wspace"
+	"github.com/rechargelabs/rules_go/go/tools/gazelle/generator"
+	"github.com/rechargelabs/rules_go/go/tools/gazelle/merger"
+	"github.com/rechargelabs/rules_go/go/tools/gazelle/rules"
+	"github.com/rechargelabs/rules_go/go/tools/gazelle/wspace"
 )
 
 var (

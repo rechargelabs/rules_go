@@ -25,8 +25,8 @@ import (
 	"strings"
 
 	bzl "github.com/bazelbuild/buildtools/build"
-	"github.com/bazelbuild/rules_go/go/tools/gazelle/packages"
-	"github.com/bazelbuild/rules_go/go/tools/gazelle/rules"
+	"github.com/rechargelabs/rules_go/go/tools/gazelle/packages"
+	"github.com/rechargelabs/rules_go/go/tools/gazelle/rules"
 )
 
 const (
@@ -48,7 +48,7 @@ type Generator struct {
 //
 // "repoRoot" is a path to the root directory of the repository.
 // "goPrefix" is the go_prefix corresponding to the repository root directory.
-// See also https://github.com/bazelbuild/rules_go#go_prefix.
+// See also https://github.com/rechargelabs/rules_go#go_prefix.
 // "buildFileName" is the name of the BUILD file (BUILD or BUILD.bazel).
 // "buildTags" is set of build tags that are true on all platforms. Some
 // additional tags will be added to this. May be nil.

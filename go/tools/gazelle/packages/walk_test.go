@@ -23,7 +23,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/bazelbuild/rules_go/go/tools/gazelle/packages"
+	"github.com/rechargelabs/rules_go/go/tools/gazelle/packages"
 )
 
 func tempDir() (string, error) {
