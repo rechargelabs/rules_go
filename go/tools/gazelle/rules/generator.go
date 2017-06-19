@@ -71,13 +71,14 @@ type Generator interface {
 //
 // "repoRoot" is a path to the root directory of the repository.
 // "goPrefix" is the go_prefix corresponding to the repository root.
+// "isRepoGopath" is whether or not the repository root is the root of a GOPATH.
 // See also https://github.com/rechargelabs/rules_go#go_prefix.
 // "external" is how external packages should be resolved.
-func NewGenerator(repoRoot string, goPrefix string, external ExternalResolver) Generator {
+func NewGenerator(repoRoot string, goPrefix string, isRepoGopath bool, external ExternalResolver) Generator {
 	var (
 		// TODO(yugui) Support another resolver to cover the pattern 2 in
 		// https://github.com/rechargelabs/rules_go/issues/16#issuecomment-216010843
-		r = structuredResolver{goPrefix: goPrefix}
+		r = structuredResolver{goPrefix: goPrefix, isRepoGopath: isRepoGopath}
 	)
 
 	var e labelResolver
@@ -85,27 +86,40 @@ func NewGenerator(repoRoot string, goPrefix string, external ExternalResolver) G
 	case External:
 		e = externalResolver{}
 	case Vendored:
-		e = vendoredResolver{}
+		e = vendoredResolver{goPrefix: goPrefix, isRepoGopath: isRepoGopath}
 	default:
 		return nil
 	}
 
 	return &generator{
-		repoRoot: repoRoot,
-		goPrefix: goPrefix,
+		repoRoot:     repoRoot,
+		goPrefix:     goPrefix,
+		isRepoGopath: isRepoGopath,
 		r: resolverFunc(func(importpath, dir string) (label, error) {
 			if importpath != goPrefix && !strings.HasPrefix(importpath, goPrefix+"/") && !isRelative(importpath) {
 				return e.resolve(importpath, dir)
 			}
 			return r.resolve(importpath, dir)
 		}),
+		importpath: func(dir string) string {
+			if !isRepoGopath {
+				panic("importpath called when isRepoGopath is false")
+			}
+
+			if external == Vendored && strings.Contains(dir, "vendor/") { // vendored code doesn't need an explicit importpath
+				return ""
+			}
+			return strings.TrimPrefix(dir, "src/")
+		},
 	}
 }
 
 type generator struct {
-	repoRoot string
-	goPrefix string
-	r        labelResolver
+	repoRoot     string
+	goPrefix     string
+	isRepoGopath bool
+	r            labelResolver
+	importpath   func(dir string) string
 }
 
 func (g *generator) Generate(rel string, pkg *packages.Package) []*bzl.Rule {
@@ -268,6 +282,11 @@ func (g *generator) generateRule(rel, kind, name, visibility, library string, ha
 	if !target.Imports.IsEmpty() {
 		deps := g.dependencies(target.Imports, rel)
 		attrs = append(attrs, keyvalue{"deps", deps})
+	}
+	if kind == "go_library" && g.isRepoGopath {
+		if importpath := g.importpath(rel); importpath != "" {
+			attrs = append(attrs, keyvalue{"importpath", importpath})
+		}
 	}
 	return newRule(kind, nil, attrs)
 }

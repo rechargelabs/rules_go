@@ -49,11 +49,12 @@ type Generator struct {
 // "repoRoot" is a path to the root directory of the repository.
 // "goPrefix" is the go_prefix corresponding to the repository root directory.
 // See also https://github.com/rechargelabs/rules_go#go_prefix.
+// "isRepoGopath" is whether or not the repository root is the root of a GOPATH.
 // "buildFileName" is the name of the BUILD file (BUILD or BUILD.bazel).
 // "buildTags" is set of build tags that are true on all platforms. Some
 // additional tags will be added to this. May be nil.
 // "external" is how external packages should be resolved.
-func New(repoRoot, goPrefix, buildFileName string, buildTags map[string]bool, external rules.ExternalResolver) (*Generator, error) {
+func New(repoRoot, goPrefix string, isRepoGopath bool, buildFileName string, buildTags map[string]bool, external rules.ExternalResolver) (*Generator, error) {
 	repoRoot, err := filepath.Abs(repoRoot)
 	if err != nil {
 		return nil, err
@@ -71,7 +72,7 @@ func New(repoRoot, goPrefix, buildFileName string, buildTags map[string]bool, ex
 		buildFileName: buildFileName,
 		buildTags:     buildTags,
 		platforms:     platforms,
-		g:             rules.NewGenerator(repoRoot, goPrefix, external),
+		g:             rules.NewGenerator(repoRoot, goPrefix, isRepoGopath, external),
 	}, nil
 }
 

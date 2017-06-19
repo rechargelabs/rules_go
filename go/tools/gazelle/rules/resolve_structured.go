@@ -24,7 +24,8 @@ import (
 // structuredResolver resolves go_library labels within the same repository as
 // the one of goPrefix.
 type structuredResolver struct {
-	goPrefix string
+	goPrefix     string
+	isRepoGopath bool
 }
 
 // resolve takes a Go importpath within the same respository as r.goPrefix
@@ -39,7 +40,12 @@ func (r structuredResolver) resolve(importpath, dir string) (label, error) {
 	}
 
 	if prefix := r.goPrefix + "/"; strings.HasPrefix(importpath, prefix) {
-		pkg := strings.TrimPrefix(importpath, prefix)
+		var pkg string
+		if r.isRepoGopath {
+			pkg = "src/" + importpath
+		} else {
+			pkg = strings.TrimPrefix(importpath, prefix)
+		}
 		if pkg == dir {
 			return label{name: defaultLibName, relative: true}, nil
 		}
